@@ -1,6 +1,6 @@
 import express from "express";
 import createHomepageTemplate from "./views/index.js";
-import listOfBooks from "./views/list.js";
+import createListTemplate from "./views/list.js";
 import createBookTemplate from "./views/book.js";
 import BOOKS_DATA from "./data/data.js";
 import createEditFormTemplate from "./views/edit.js";
@@ -14,7 +14,7 @@ app.get("/", (_, res) => {
 });
 
 app.get("/books", (_, res) => {
-  res.send(listOfBooks());
+  res.send(createListTemplate(BOOKS_DATA));
 });
 
 app.get("/books/:id", (req, res) => {
@@ -34,6 +34,12 @@ app.post("/books", (req, res) => {
   const id = Math.random().toString();
   BOOKS_DATA.push({ id, title, author });
   res.redirect(`/books/${id}`);
+});
+
+app.post("/books/search", (req, res) => {
+  const text = req.body.search.toLowerCase();
+  const books = BOOKS_DATA.filter((b) => b.title.toLowerCase().includes(text));
+  res.send(createListTemplate(books));
 });
 
 app.put("/books/:id", (req, res) => {

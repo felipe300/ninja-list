@@ -1,7 +1,7 @@
 // WARNING:
 // "html" you will have higlights, but will get an error: "html is not defined"
 // "/*html*/" you will solve the error, but will lost higlights
-const createHomepageTemplate = () => html`
+const createHomepageTemplate = () => /*html*/ `
   <!doctype html>
   <html lang="en">
     <head>
@@ -31,18 +31,15 @@ const createHomepageTemplate = () => html`
         </div>
         <div class="add-book-form">
           <h2>What do you want to read?</h2>
-          <form>
-            <input type="text" name="title" placeholder="title" />
-            <input type="text" name="author" placeholder="author" />
-            <button
-              hx-on::after-request="document.querySelector('form').reset()"
-              hx-on:click="console.log('Event', event)"
-              hx-post="/books"
-              hx-target=".book-list ul"
-              hx-swap="beforeend"
-            >
-              Add Book
-            </button>
+          <form
+            hx-post="/books"
+            hx-on::after-request="document.querySelector('form').reset()"
+            hx-target=".book-list ul"
+            hx-swap="beforeend"
+          >
+            <input type="text" name="title" placeholder="title" required />
+            <input type="text" name="author" placeholder="author" required />
+            <button>Add Book</button>
           </form>
         </div>
       </main>
